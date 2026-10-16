@@ -122,7 +122,16 @@ test('validateItemInput enforces required product name and positive numbers', ()
   assert.equal(validCheck.valid, true);
 });
 
-test('formatPrice and formatPurchaseMonth format display strings cleanly', () => {
+test('formatPrice and formatPurchaseMonth format display strings cleanly in KO and EN', () => {
   assert.equal(formatPrice(139000, 'KRW'), '139,000원');
+  assert.equal(formatPrice(139000, 'KRW', 'en'), '₩139,000');
+  assert.equal(formatPrice(undefined, 'KRW', 'en'), 'Price TBD');
   assert.equal(formatPurchaseMonth('2025-10-12'), '2025.10');
+  assert.equal(formatPurchaseMonth(undefined, 'en'), 'Unknown date');
+
+  const emptyEn = validateItemInput({ name: '', price: -10, quantity: 0 }, 'en');
+  assert.equal(emptyEn.valid, false);
+  assert.equal(emptyEn.errors.name, 'Please enter a product name.');
 });
+
+

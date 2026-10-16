@@ -1,5 +1,6 @@
 import React from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, Globe } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext.tsx';
 
 export type RouteView =
   | { page: 'home' }
@@ -19,9 +20,12 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigate,
   onResetSamples,
 }) => {
+  const { lang, setLang } = useLanguage();
+  const isEn = lang === 'en';
+
   return (
     <header className="sticky top-0 z-30 bg-[#0C0D0E]/95 backdrop-blur-md border-b border-zinc-800/80">
-      <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-8 px-4 sm:px-6 h-16">
+      <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-4 sm:gap-8 px-4 sm:px-6 h-16">
         {/* Zone 1: Single text element wordmark */}
         <a
           href="#/"
@@ -36,7 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Zone 2: 4 clean single-line text navigation links */}
         <nav
-          aria-label="주요 메뉴"
+          aria-label={isEn ? 'Main navigation' : '주요 메뉴'}
           className="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-400"
         >
           <a
@@ -49,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               currentRoute.page === 'home' ? 'text-zinc-100 underline' : ''
             }`}
           >
-            내 물건
+            {isEn ? 'My Shelf' : '내 물건'}
           </a>
           <a
             href="#/add/scan"
@@ -61,7 +65,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               currentRoute.page === 'scan' ? 'text-zinc-100 underline' : ''
             }`}
           >
-            주문 화면 스캔
+            {isEn ? 'Scan Order' : '주문 화면 스캔'}
           </a>
           <a
             href="#/add/manual"
@@ -73,26 +77,63 @@ export const Navbar: React.FC<NavbarProps> = ({
               currentRoute.page === 'manual' ? 'text-zinc-100 underline' : ''
             }`}
           >
-            직접 입력
+            {isEn ? 'Manual Entry' : '직접 입력'}
           </a>
           <button
             type="button"
             onClick={onResetSamples}
             className="hover:text-zinc-100 hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
           >
-            샘플 데이터 복원
+            {isEn ? 'Reset Samples' : '샘플 데이터 복원'}
           </button>
         </nav>
 
-        {/* Zone 3: 1 primary action */}
-        <div className="flex items-center shrink-0">
+        {/* Zone 3: Language Switcher (KOR / ENG) & Primary Action */}
+        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+          <div
+            role="group"
+            aria-label={isEn ? 'Select language' : '언어 선택'}
+            className="inline-flex items-center p-0.5 bg-[#141619] border border-zinc-800 rounded-lg"
+          >
+            <Globe
+              className="w-3.5 h-3.5 text-zinc-500 ml-2 mr-1 hidden sm:block"
+              aria-hidden="true"
+            />
+            <button
+              type="button"
+              data-testid="lang-kor"
+              aria-pressed={lang === 'ko'}
+              onClick={() => setLang('ko')}
+              className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-colors cursor-pointer font-mono-tabular ${
+                lang === 'ko'
+                  ? 'bg-[#D4F82A] text-[#0C0D0E]'
+                  : 'text-zinc-400 hover:text-zinc-100'
+              }`}
+            >
+              KOR
+            </button>
+            <button
+              type="button"
+              data-testid="lang-eng"
+              aria-pressed={lang === 'en'}
+              onClick={() => setLang('en')}
+              className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-colors cursor-pointer font-mono-tabular ${
+                lang === 'en'
+                  ? 'bg-[#D4F82A] text-[#0C0D0E]'
+                  : 'text-zinc-400 hover:text-zinc-100'
+              }`}
+            >
+              ENG
+            </button>
+          </div>
+
           <button
             type="button"
             onClick={() => onNavigate({ page: 'add' })}
             className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-[#0C0D0E] bg-[#D4F82A] rounded-lg hover:bg-[#c5e91f] transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D4F82A]"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" aria-hidden="true" />
-            <span>추가</span>
+            <span>{isEn ? 'Add' : '추가'}</span>
           </button>
         </div>
       </div>

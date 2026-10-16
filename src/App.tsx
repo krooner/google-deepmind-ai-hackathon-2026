@@ -16,6 +16,7 @@ import { AddMethodView } from './components/AddMethodView.tsx';
 import { ScanAddView } from './components/ScanAddView.tsx';
 import { ManualAddView } from './components/ManualAddView.tsx';
 import { ItemDetailView } from './components/ItemDetailView.tsx';
+import { LanguageProvider, useLanguage } from './i18n/LanguageContext.tsx';
 
 function parseHashToRoute(hash: string): RouteView {
   const clean = hash.replace(/^#/, '') || '/';
@@ -54,7 +55,9 @@ function routeToHash(route: RouteView): string {
   }
 }
 
-export default function App() {
+function AppContent() {
+  const { lang, localizeItem } = useLanguage();
+  const isEn = lang === 'en';
   const [items, setItems] = useState<Item[]>(() => loadItemsFromStorage());
   const [route, setRoute] = useState<RouteView>(() =>
     typeof window !== 'undefined'
@@ -104,7 +107,11 @@ export default function App() {
     setSelectedCategory('all');
     setSelectedStatus('all');
     setSearchQuery('');
-    showBanner(`'${newItem.name}' 아이템이 내 물건 목록에 추가되었습니다.`);
+    showBanner(
+      isEn
+        ? `'${newItem.name}' has been added to your shelf.`
+        : `'${newItem.name}' 아이템이 내 물건 목록에 추가되었습니다.`
+    );
     navigate({ page: 'home' });
   };
 
@@ -122,7 +129,12 @@ export default function App() {
     setItems(updated);
     saveItemsToStorage(updated);
     if (target) {
-      showBanner(`'${target.name}' 아이템이 삭제되었습니다.`);
+      const displayName = localizeItem(target).name;
+      showBanner(
+        isEn
+          ? `'${displayName}' has been deleted.`
+          : `'${displayName}' 아이템이 삭제되었습니다.`
+      );
     }
     navigate({ page: 'home' });
   };
@@ -133,7 +145,11 @@ export default function App() {
     setSelectedCategory('all');
     setSelectedStatus('all');
     setSearchQuery('');
-    showBanner('기본 샘플 보유품 4개가 복원되었습니다.');
+    showBanner(
+      isEn
+        ? '4 default sample items have been restored.'
+        : '기본 샘플 보유품 4개가 복원되었습니다.'
+    );
     navigate({ page: 'home' });
   };
 
@@ -205,10 +221,27 @@ export default function App() {
 
       <footer className="border-t border-zinc-900 py-6 mt-12">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
-          <p>OneShelf — 플랫폼에 갇힌 구매 기록을 내 물건 목록으로</p>
-          <p>모든 보유품 데이터는 브라우저 로컬 스토리지에 안전하게 보관됩니다.</p>
+          <p>
+            {isEn
+              ? 'OneShelf — Turn scattered purchase receipts into your personal shelf'
+              : 'OneShelf — 플랫폼에 갇힌 구매 기록을 내 물건 목록으로'}
+          </p>
+          <p>
+            {isEn
+              ? 'All inventory data is safely stored in your browser local storage.'
+              : '모든 보유품 데이터는 브라우저 로컬 스토리지에 안전하게 보관됩니다.'}
+          </p>
         </div>
       </footer>
     </div>
   );
 }
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
+  );
+}
+

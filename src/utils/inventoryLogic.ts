@@ -12,6 +12,12 @@ const BRAND_SYNONYMS: Record<string, string> = {
   뉴발란스: 'newbalance',
   에어포스: 'airforce',
   에어포스1: 'airforce1',
+  레저렉션: 'resurrection',
+  아로마틱: 'aromatique',
+  '핸드 밤': 'hand balm',
+  핸드밤: 'handbalm',
+  퀜처: 'quencher',
+  텀블러: 'tumbler',
 };
 
 export function normalizeText(text?: string | null): string {
@@ -174,28 +180,38 @@ export function computeInventoryStats(items: Item[], referenceDateIso?: string) 
   };
 }
 
-export function validateItemInput(input: {
-  name?: string | null;
-  price?: number | string | null;
-  quantity?: number | string | null;
-}): { valid: boolean; errors: Record<string, string> } {
+export function validateItemInput(
+  input: {
+    name?: string | null;
+    price?: number | string | null;
+    quantity?: number | string | null;
+  },
+  lang: 'ko' | 'en' = 'ko'
+): { valid: boolean; errors: Record<string, string> } {
   const errors: Record<string, string> = {};
 
   if (!input.name || !input.name.trim()) {
-    errors.name = '상품명을 입력해 주세요.';
+    errors.name =
+      lang === 'en' ? 'Please enter a product name.' : '상품명을 입력해 주세요.';
   }
 
   if (input.price !== undefined && input.price !== null && input.price !== '') {
     const numericPrice = typeof input.price === 'string' ? Number(input.price) : input.price;
     if (Number.isNaN(numericPrice) || numericPrice < 0) {
-      errors.price = '가격은 0 이상의 숫자여야 합니다.';
+      errors.price =
+        lang === 'en'
+          ? 'Price must be a number of 0 or greater.'
+          : '가격은 0 이상의 숫자여야 합니다.';
     }
   }
 
   if (input.quantity !== undefined && input.quantity !== null && input.quantity !== '') {
     const numericQty = typeof input.quantity === 'string' ? Number(input.quantity) : input.quantity;
     if (Number.isNaN(numericQty) || numericQty < 1 || !Number.isInteger(numericQty)) {
-      errors.quantity = '수량은 1 이상의 정수여야 합니다.';
+      errors.quantity =
+        lang === 'en'
+          ? 'Quantity must be an integer of 1 or greater.'
+          : '수량은 1 이상의 정수여야 합니다.';
     }
   }
 
@@ -205,21 +221,30 @@ export function validateItemInput(input: {
   };
 }
 
-export function formatPrice(price?: number | null, currency: Currency = 'KRW'): string {
+export function formatPrice(
+  price?: number | null,
+  currency: Currency = 'KRW',
+  lang: 'ko' | 'en' = 'ko'
+): string {
   if (price === undefined || price === null || Number.isNaN(price)) {
-    return '가격 미정';
+    return lang === 'en' ? 'Price TBD' : '가격 미정';
   }
   if (currency === 'KRW') {
-    return `${price.toLocaleString('ko-KR')}원`;
+    return lang === 'en'
+      ? `₩${price.toLocaleString('en-US')}`
+      : `${price.toLocaleString('ko-KR')}원`;
   }
   if (currency === 'USD') {
     return `$${price.toLocaleString('en-US')}`;
   }
-  return `${price.toLocaleString('ko-KR')} ${currency}`;
+  return `${price.toLocaleString(lang === 'en' ? 'en-US' : 'ko-KR')} ${currency}`;
 }
 
-export function formatPurchaseMonth(dateStr?: string | null): string {
-  if (!dateStr) return '구매일 미상';
+export function formatPurchaseMonth(
+  dateStr?: string | null,
+  lang: 'ko' | 'en' = 'ko'
+): string {
+  if (!dateStr) return lang === 'en' ? 'Unknown date' : '구매일 미상';
   const parts = dateStr.split('-');
   if (parts.length >= 2) {
     return `${parts[0]}.${parts[1]}`;
