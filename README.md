@@ -1,11 +1,39 @@
-<div align="center">
+# OneShelf: 구매·보유품 통합 관리
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+**OneShelf**는 쇼핑몰 곳곳에 흩어진 내 옷·화장품·시계·생활용품의 구매 기록을, 주문 화면 스크린샷 한 장으로 모아 주는 개인 보유품 관리 앱입니다.
 
-  <h1>Built with AI Studio</h2>
+## 1. 주요 기능
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+- **내 물건 통합 아카이브 (`/`)**: 보유품 전체 개수, 이번 달 추가 개수, 현재 사용 중인 아이템 수, 합산 가치를 한눈에 확인하고 카테고리(`의류 / 뷰티 / 시계·주얼리 / 생활용품 / 기타`)와 키워드로 빠르게 검색합니다.
+- **AI 주문 화면 스캔 (`#/add/scan`)**: 주문 완료 화면이나 전자영수증 스크린샷을 올리면 Gemini Vision이 브랜드, 상품명, 카테고리, 구매일, 가격, 판매처, 수량 및 추출 근거를 구조화합니다.
+- **중복 구매 감지 경고**: 새로 추가하려는 아이템의 `브랜드 + 상품명`을 정규화해 기존 보유품과 비교하고, 동일하거나 유사한 보유품이 있을 때 `"이미 비슷한 보유품이 있어요: Nike Air Force 1 '07 (2025.10 구매)"` 경고를 즉시 표시합니다.
+- **직접 입력 (`#/add/manual`) & 상세 관리 (`#/items/:id`)**: 상품명만 입력해 빠르게 수기 등록하거나, 각 아이템의 상태(`새것 / 사용 중 / 보관 / 처분함`), 보관 위치·보증기간 메모, 원본 주문 화면을 확인·수정할 수 있습니다.
+- **기본 샘플 아이템 4개 자동 탑재**: 첫 실행 시 브라우저 `localStorage`에 현실적인 샘플 아이템 4종(나이키 에어포스 1, 이솝 핸드 밤, 카시오 풀메탈 워치, 스탠리 텀블러)이 자동 저장되어 빈 화면 없이 즉시 데모를 시연할 수 있습니다.
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## 2. 실행 방법
 
-</div>
+```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 실행 (포트 3000, Express + Vite)
+npm run dev
+
+# 순수 비즈니스 로직 단위 테스트 실행
+npm test
+```
+
+브라우저에서 `http://localhost:3000`으로 접속합니다.
+
+## 3. Gemini API 키 설정
+
+1. 루트 디렉터리의 `.env.example`을 참고하여 환경 변수 `GEMINI_API_KEY`를 설정합니다.
+   ```env
+   GEMINI_API_KEY="발급받은_GEMINI_API_KEY"
+   ```
+2. 서버(`server.ts`)의 `POST /api/analyze-receipt` 엔드포인트가 `@google/genai` SDK(`gemini-3.8-flash`)를 호출해 업로드된 이미지를 분석하고 JSON 스키마에 맞춘 추출 결과를 반환합니다.
+
+## 4. 안정적인 데모 Fallback 동작
+
+- `GEMINI_API_KEY`가 설정되지 않았거나 네트워크/API 호출이 실패하더라도 사용자에게 오류 화면만 보여주지 않습니다.
+- 자동으로 현실적인 **무신사 / 올리브영 / 29CM 주문 완료 샘플 추출 결과**(브랜드, 상품명, 가격, 구매일, AI 신뢰도 및 추출 근거 포함)를 채워 주므로, 어떤 환경에서든 **업로드 → 검토·수정 → 중복 구매 경고 확인 → 내 물건에 저장**까지 전체 데모 시나리오를 끊김 없이 시연할 수 있습니다.

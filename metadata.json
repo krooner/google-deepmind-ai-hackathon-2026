@@ -1,0 +1,6 @@
+{
+  "name": "OneShelf — 구매·보유품 통합 관리",
+  "description": "쇼핑몰 곳곳에 흩어진 내 옷·화장품·시계·생활용품의 구매 기록을 주문 화면 스크린샷 한 장으로 모아 주는 AI 개인 보유품 관리 앱",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
