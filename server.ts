@@ -178,6 +178,8 @@ async function startServer() {
   if (process.env.NODE_ENV === 'production') {
     const distPath = path.resolve(__dirname, 'dist');
     app.use(express.static(distPath));
+    app.use(express.static(path.resolve(__dirname, 'public')));
+    app.use('/src/assets', express.static(path.resolve(__dirname, 'src', 'assets')));
     app.get('*', (_req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });

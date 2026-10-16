@@ -1,10 +1,10 @@
 import type { ExtractedItem, Item } from '../types/item.ts';
 
 export const PRODUCT_IMAGES = {
-  sneakers: '/src/assets/images/item_sneakers_nike_1792126826477.jpg',
-  beauty: '/src/assets/images/item_beauty_aesop_1792126826478.jpg',
-  watch: '/src/assets/images/item_watch_casio_1792126827185.jpg',
-  tumbler: '/src/assets/images/item_merch_tumbler_1792126826698.jpg',
+  sneakers: '/images/item_sneakers_nike_1792126826477.jpg',
+  beauty: '/images/item_beauty_aesop_1792126826478.jpg',
+  watch: '/images/item_watch_casio_1792126827185.jpg',
+  tumbler: '/images/item_merch_tumbler_1792126826698.jpg',
 };
 
 function createReceiptSvgDataUrl(config: {

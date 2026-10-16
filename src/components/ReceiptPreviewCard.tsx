@@ -29,7 +29,7 @@ export const RECEIPT_META_BY_ID: Record<string, ReceiptMeta> = {
     optionTextEn: '270mm / White (CW2288-111)',
     priceText: '139,000원',
     priceTextEn: '₩139,000',
-    productThumbUrl: '/src/assets/images/item_sneakers_nike_1792126826477.jpg',
+    productThumbUrl: '/images/item_sneakers_nike_1792126826477.jpg',
   },
   'oliveyoung-aesop-handbalm': {
     platform: 'OLIVE YOUNG',
@@ -43,7 +43,7 @@ export const RECEIPT_META_BY_ID: Record<string, ReceiptMeta> = {
     optionTextEn: '75mL Single / Gift Wrapped',
     priceText: '39,000원',
     priceTextEn: '₩39,000',
-    productThumbUrl: '/src/assets/images/item_beauty_aesop_1792126826478.jpg',
+    productThumbUrl: '/images/item_beauty_aesop_1792126826478.jpg',
   },
   '29cm-stanley-tumbler': {
     platform: '29CM ORDER',
@@ -57,7 +57,7 @@ export const RECEIPT_META_BY_ID: Record<string, ReceiptMeta> = {
     optionTextEn: '473mL / Matte Black',
     priceText: '52,000원',
     priceTextEn: '₩52,000',
-    productThumbUrl: '/src/assets/images/item_merch_tumbler_1792126826698.jpg',
+    productThumbUrl: '/images/item_merch_tumbler_1792126826698.jpg',
   },
   'seed-casio-watch-receipt': {
     platform: '29CM ORDER',
@@ -71,7 +71,7 @@ export const RECEIPT_META_BY_ID: Record<string, ReceiptMeta> = {
     optionTextEn: 'Silver Stainless Steel / Warranty Card Included',
     priceText: '680,000원',
     priceTextEn: '₩680,000',
-    productThumbUrl: '/src/assets/images/item_watch_casio_1792126827185.jpg',
+    productThumbUrl: '/images/item_watch_casio_1792126827185.jpg',
   },
   'seed-stanley-tumbler-receipt': {
     platform: 'NAVER PAY ORDER',
@@ -85,7 +85,7 @@ export const RECEIPT_META_BY_ID: Record<string, ReceiptMeta> = {
     optionTextEn: '887mL / Charcoal Matte',
     priceText: '49,000원',
     priceTextEn: '₩49,000',
-    productThumbUrl: '/src/assets/images/item_merch_tumbler_1792126826698.jpg',
+    productThumbUrl: '/images/item_merch_tumbler_1792126826698.jpg',
   },
 };
 

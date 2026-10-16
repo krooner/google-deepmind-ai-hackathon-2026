@@ -21,7 +21,11 @@ export function loadItemsFromStorage(): Item[] {
 
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed)) {
-      return parsed;
+      return parsed.map((item: Item) => ({
+        ...item,
+        imageUrl: item.imageUrl?.replace(/^\/src\/assets\/images\//, '/images/'),
+        receiptImageUrl: item.receiptImageUrl?.replace(/^\/src\/assets\/images\//, '/images/'),
+      }));
     }
     return INITIAL_SAMPLE_ITEMS;
   } catch (err) {
